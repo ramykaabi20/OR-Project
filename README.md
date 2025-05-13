@@ -1,59 +1,77 @@
-# ROProject
+# Projet de Recherche Opérationnelle
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.11.
+Ce projet implémente deux problèmes classiques d'optimisation :
+1. Le problème du plus court chemin
+2. Le problème du voyageur de commerce (TSP)
 
-## Development server
+## Structure du Projet
 
-To start a local development server, run:
+- `Backend/` : Serveur Flask avec l'implémentation des algorithmes d'optimisation
+  - `app.py` : Serveur pour le plus court chemin (port 5000)
+  - `PLNE.py` : Serveur pour le TSP (port 5001)
+  - `requirements.txt` : Dépendances Python
 
+- `Frontend/shortest-path-app/` : Application Angular
+  - Interface utilisateur moderne et interactive
+  - Visualisation des graphes avec vis.js
+  - Gestion des matrices d'adjacence/distance
+
+## Technologies Utilisées
+
+- Backend :
+  - Python 3
+  - Flask
+  - Gurobi (solveur d'optimisation)
+  - NumPy
+
+- Frontend :
+  - Angular
+  - Bootstrap
+  - vis.js pour la visualisation des graphes
+
+## Installation
+
+1. Backend :
 ```bash
-ng serve
+cd Backend
+pip install -r requirements.txt
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. Frontend :
 ```bash
-ng generate component component-name
+cd Frontend/shortest-path-app
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Lancement
 
+1. Backend :
 ```bash
-ng generate --help
+# Dans un premier terminal
+cd Backend
+python app.py  # Lance le serveur du plus court chemin sur le port 5000
+
+# Dans un second terminal
+cd Backend
+python PLNE.py  # Lance le serveur TSP sur le port 5001
 ```
 
-## Building
-
-To build the project run:
-
+2. Frontend :
 ```bash
-ng build
+cd Frontend/shortest-path-app
+ng serve  # Lance l'application Angular sur http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Fonctionnalités
 
-## Running unit tests
+### Plus Court Chemin
+- Ajout/suppression de nœuds
+- Configuration de la matrice d'adjacence
+- Calcul du plus court chemin entre deux nœuds
+- Visualisation du résultat
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### TSP
+- Gestion des villes
+- Configuration de la matrice des distances
+- Résolution du TSP avec la formulation MTZ
+- Visualisation du circuit optimal

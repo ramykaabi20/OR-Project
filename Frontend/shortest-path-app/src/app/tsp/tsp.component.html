@@ -1,0 +1,109 @@
+<div class="container mt-4">
+  <h1 class="text-center mb-4">Problème du Voyageur de Commerce</h1>
+
+  <div class="row mb-3">
+    <div class="col-12 text-end">
+      <button class="btn btn-secondary me-2" (click)="resetAll()">
+        <i class="bi bi-arrow-counterclockwise"></i> Réinitialiser
+      </button>
+      <button class="btn btn-info" (click)="generateRandomCities()">
+        <i class="bi bi-shuffle"></i> Générer aléatoirement
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="card-title">Gestion des Villes</h5>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="cityInput" 
+                     placeholder="Nom de la ville" (keyup.enter)="addCity()">
+              <button class="btn btn-primary" (click)="addCity()" 
+                      [disabled]="!cityInput.trim() || cities.includes(cityInput.trim())">
+                Ajouter une ville
+              </button>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <h6>Villes :</h6>
+            <div class="d-flex flex-wrap gap-2">
+              <div *ngFor="let city of cities; let i = index" 
+                   class="badge bg-primary d-flex align-items-center">
+                {{ city }}
+                <button type="button" class="btn-close btn-close-white ms-2" 
+                        aria-label="Supprimer" (click)="removeCity(i)">
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4" *ngIf="cities.length > 1">
+        <div class="card-header">
+          <h5 class="card-title">Matrice des Distances</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th *ngFor="let city of cities" class="text-center">{{ city }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let city of cities; let i = index">
+                  <th>{{ city }}</th>
+                  <td *ngFor="let _ of cities; let j = index">
+                    <input *ngIf="i !== j" type="number" class="form-control form-control-sm" 
+                           [value]="distances[i]?.[j] || 0" 
+                           (input)="updateDistance(i, j, $any($event.target).value)"
+                           min="0" 
+                           style="width: 60px">
+                    <span *ngIf="i === j">-</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mb-4" *ngIf="cities.length > 1">
+        <button class="btn btn-primary" (click)="solveTSP()" [disabled]="loading">
+          <span class="spinner-border spinner-border-sm me-2" *ngIf="loading"></span>
+          Résoudre le TSP
+        </button>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card" *ngIf="result && result.status === 'success'">
+        <div class="card-header">
+          <h5 class="card-title">Résultat</h5>
+        </div>
+        <div class="card-body">
+          <h6>Circuit optimal trouvé :</h6>
+          <p class="lead">{{ getTourPath() }}</p>
+          
+          <h6>Distance totale :</h6>
+          <p class="lead">{{ result.total_distance | number:'1.0-2' }} unités</p>
+
+          <app-graph-visualizer 
+            *ngIf="result && result.status === 'success'"
+            [matrix]="distances"
+            [tour]="result.tour"
+            [labels]="cities">
+          </app-graph-visualizer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
