@@ -151,10 +151,8 @@ export class TspComponent implements OnInit {
     if (!this.result || !this.result.tour || !Array.isArray(this.result.tour)) {
       return '';
     }
-    const path = this.result.tour.map(index => this.cities[index]);
-    if (path.length > 0) {
-      path.push(path[0]); // Ajouter la ville de départ à la fin pour compléter le circuit
-    }
+    // On prend toutes les villes sauf la dernière qui est identique à la première
+    const path = this.result.tour.slice(0, -1).map(index => this.cities[index]);
     return path.join(' → ');
   }
 
