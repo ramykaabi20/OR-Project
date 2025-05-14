@@ -72,7 +72,6 @@ export class TspComponent implements OnInit {
         this.distances[j] = new Array(this.cities.length).fill(0);
       }
       this.distances[i][j] = distance;
-      this.distances[j][i] = distance; // La matrice est symétrique
       console.log('Matrice des distances mise à jour:', this.distances);
     }
   }
@@ -93,12 +92,13 @@ export class TspComponent implements OnInit {
     // Initialiser la matrice des distances
     this.distances = Array(numCities).fill(0).map(() => Array(numCities).fill(0));
 
-    // Générer des distances aléatoires
+    // Générer des distances aléatoires différentes pour chaque direction
     for (let i = 0; i < numCities; i++) {
-      for (let j = 0; j < i; j++) {
-        const distance = Math.floor(Math.random() * 20) + 1; // Distance entre 1 et 20
-        this.distances[i][j] = distance;
-        this.distances[j][i] = distance; // Matrice symétrique
+      for (let j = 0; j < numCities; j++) {
+        if (i !== j) {
+          const distance = Math.floor(Math.random() * 20) + 1; // Distance entre 1 et 20
+          this.distances[i][j] = distance;
+        }
       }
     }
 
