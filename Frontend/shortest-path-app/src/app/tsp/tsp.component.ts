@@ -92,12 +92,13 @@ export class TspComponent implements OnInit {
     // Initialiser la matrice des distances
     this.distances = Array(numCities).fill(0).map(() => Array(numCities).fill(0));
 
-    // Générer des distances aléatoires différentes pour chaque direction
+    // Générer des distances aléatoires symétriques
     for (let i = 0; i < numCities; i++) {
-      for (let j = 0; j < numCities; j++) {
+      for (let j = 0; j < i; j++) { // On ne parcourt que la moitié inférieure de la matrice
         if (i !== j) {
           const distance = Math.floor(Math.random() * 20) + 1; // Distance entre 1 et 20
           this.distances[i][j] = distance;
+          this.distances[j][i] = distance; // Symétrie : même distance dans l'autre sens
         }
       }
     }
